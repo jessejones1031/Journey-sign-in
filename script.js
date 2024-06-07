@@ -471,3 +471,8 @@ window.onload = function () {
     .getElementById("parent-cell-phone")
     .addEventListener("input", handlePhoneInput);
 };
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(() => console.log('Service Worker Registered'))
+    .catch(error => console.log('Service Worker Registration Failed', error));
+}
