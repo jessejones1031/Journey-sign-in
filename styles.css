@@ -116,8 +116,13 @@ select {
 .info-container {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .notes-container {
   margin-left: 20px;
+}
+
+.notes-content {
+  margin-bottom: 10px;
 }
