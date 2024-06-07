@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -5,54 +6,54 @@
     <title>Youth Ministry Attendance</title>
     <link rel="stylesheet" href="style.css">
 </head>
-    <body>
-      <div class="container">
-      <h1>Youth Ministry Attendance</h1>
-      <input type="text" id="search-name" placeholder="Search by Last Name">
-      <button id="search-button">Search</button>
-      <button id="add-teen-button">Add New Teen</button>
-    
-      <div id="search-results"></div>
-    
-      <form id="attendance-form" style="display: none;">
-        <input type="text" id="first-name" placeholder="First Name">
-        <input type="text" id="last-name" placeholder="Last Name">
-        <input type="text" id="cell-phone" placeholder="Cell Phone">
-        <input type="email" id="email" placeholder="Email">
-        <input type="number" id="grad-year" placeholder="Graduation Year">
-        <input type="date" id="dob" placeholder="Date of Birth">
-        <select id="confirmation-level">
-          <option value="">Confirmation Level</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="Confirmed">Confirmed</option>
-          <option value="N/A">N/A</option>
-        </select>
-        <input type="text" id="parent-first-name" placeholder="Parent First Name">
-        <input type="text" id="parent-last-name" placeholder="Parent Last Name">
-        <input type="text" id="parent-cell-phone" placeholder="Parent Cell Phone">
-        <button type="submit">Submit</button>
-        <button type="button" id="cancel-add-teen">Cancel</button>
-      </form>
-    
-      <div id="attendance-list">
-        <h2>Today's Attendance</h2>
-        <ul id="list"></ul>
-      </div>
-    
-      <div id="small-groups">
-        <h2>Generate Small Groups</h2>
-        <select id="group-count">
-          <option value="2">2 Groups</option>
-          <option value="3">3 Groups</option>
-          <option value="4">4 Groups</option>
-          <option value="5">5 Groups</option>
-          <option value="6">6 Groups</option>
-        </select>
-        <button id="generate-groups-button">Generate Small Groups</button>
-        <div id="group-results"></div>
-      </div>
+<body>
+    <div class="container">
+        <h1>Youth Ministry Attendance</h1>
+        <input type="text" id="search-name" placeholder="Search by Last Name">
+        <button id="search-button">Search</button>
+        <button id="add-teen-button">Add New Teen</button>
+
+        <div id="search-results"></div>
+
+        <form id="attendance-form" style="display: none;">
+            <input type="text" id="first-name" placeholder="First Name">
+            <input type="text" id="last-name" placeholder="Last Name">
+            <input type="text" id="cell-phone" placeholder="Cell Phone">
+            <input type="email" id="email" placeholder="Email">
+            <input type="number" id="grad-year" placeholder="Graduation Year">
+            <input type="date" id="dob" placeholder="Date of Birth">
+            <select id="confirmation-level">
+                <option value="">Confirmation Level</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="N/A">N/A</option>
+            </select>
+            <input type="text" id="parent-first-name" placeholder="Parent First Name">
+            <input type="text" id="parent-last-name" placeholder="Parent Last Name">
+            <input type="text" id="parent-cell-phone" placeholder="Parent Cell Phone">
+            <button type="submit">Submit</button>
+            <button type="button" id="cancel-add-teen">Cancel</button>
+        </form>
+
+        <div id="attendance-list">
+            <h2>Today's Attendance</h2>
+            <ul id="list"></ul>
+        </div>
+
+        <div id="small-groups">
+            <h2>Generate Small Groups</h2>
+            <select id="group-count">
+                <option value="2">2 Groups</option>
+                <option value="3">3 Groups</option>
+                <option value="4">4 Groups</option>
+                <option value="5">5 Groups</option>
+                <option value="6">6 Groups</option>
+            </select>
+            <button id="generate-groups-button">Generate Small Groups</button>
+            <div id="group-results"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
