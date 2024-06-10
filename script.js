@@ -1,27 +1,15 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  query,
-  getDocs,
-  where,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyChlC7PB4--sphdh40Mrlr-jgtv10wucA4",
-  authDomain: "journey-sign-in.firebaseapp.com",
-  projectId: "journey-sign-in",
-  storageBucket: "journey-sign-in.appspot.com",
-  messagingSenderId: "504925072757",
-  appId: "1:504925072757:web:be99eba771ae812c96773c",
-  measurementId: "G-RZY3K96VDW"
+    apiKey: "AIzaSyChlC7PB4--sphdh40Mrlr-jgtv10wucA4",
+    authDomain: "journey-sign-in.firebaseapp.com",
+    projectId: "journey-sign-in",
+    storageBucket: "journey-sign-in.appspot.com",
+    messagingSenderId: "504925072757",
+    appId: "1:504925072757:web:be99eba771ae812c96773c",
+    measurementId: "G-RZY3K96VDW"
 };
 
 // Initialize Firebase
