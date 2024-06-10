@@ -212,16 +212,16 @@ function formatTime(timestamp) {
 let todaysTeens = []; // Store the loaded teens in a global scope to avoid re-fetching
 
 async function loadAttendance() {
-    if (todaysTeens.length > 0) return;  // Only load if not already loaded
-    console.log(query);  // Ensure the function is defined
-    const q = query(collection(db, "teens"), where("date", "==", new Date().toISOString().split("T")[0]));
+    const today = new Date().toISOString().split('T')[0];  // Today's date in YYYY-MM-DD format
+    const q = query(collection(db, "teens"), where("date", "==", today));
+
     const querySnapshot = await getDocs(q);
     const list = document.getElementById("list");
-    list.innerHTML = ""; // Clear previous entries
+    list.innerHTML = ""; // Clear previous data
 
     if (querySnapshot.empty) {
         list.innerHTML = "<p>No teens have signed in today.</p>";
-        return [];
+        return;
     }
 
     const table = document.createElement("table");
@@ -232,7 +232,6 @@ async function loadAttendance() {
         const teenData = doc.data();
         const row = table.insertRow();
         row.innerHTML = `<td>${teenData.firstName} ${teenData.lastName}</td><td>${formatTime(teenData.timestamp)}</td><td>${teenData.grade}</td><td>${teenData.confirmationLevel}</td><td>${calculateAge(teenData.dob)}</td>`;
-        todaysTeens.push(teenData);  // Store teen data for potential reuse
         table.appendChild(row);
     });
 
