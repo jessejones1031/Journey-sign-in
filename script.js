@@ -60,6 +60,8 @@ async function searchTeen() {
             signInButton.addEventListener("click", () => markAttendance(doc.id));
             resultItem.appendChild(signInButton);
             searchResults.appendChild(resultItem);
+        }
+  } 
 }
 
 async function markAttendance(id) {
