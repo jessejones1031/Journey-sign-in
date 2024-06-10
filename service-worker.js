@@ -2,21 +2,22 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open('app-cache').then(cache => {
       return cache.addAll([
-        '/',
-        '/index.html',
-        '/styles.css',
-        '/script.js',
-        '/manifest.json',
-        '/icon-192x192.png',
-        '/icon-512x512.png'
+        '/Journey-sign-in/',
+        '/Journey-sign-in/index.html',
+        '/Journey-sign-in/styles.css',
+        '/Journey-sign-in/script.js',
+        '/Journey-sign-in/manifest.json',
+        '/Journey-sign-in/icon-192x192.png',
+        '/Journey-sign-in/icon-512x512.png'
       ]);
     })
   );
 });
 
 self.addEventListener('fetch', event => {
+  const adjustedPath = event.request.url.replace(location.origin, '');
   event.respondWith(
-    caches.match(event.request).then(response => {
+    caches.match(adjustedPath).then(response => {
       return response || fetch(event.request);
     })
   );
