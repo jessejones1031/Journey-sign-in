@@ -342,25 +342,6 @@ async function saveNote(teenId, note) {
   await updateDoc(teenDocRef, { notes: note });
 }
 
-async function generateGroups() {
-  const groupCount = parseInt(document.getElementById("group-count").value);
-  const teens = await loadAttendance();
-
-  if (teens.length === 0) {
-    alert("No teens have signed in today.");
-    return;
-  }
-
-  const shuffledTeens = teens.sort(() => 0.5 - Math.random());
-  const groups = Array.from({ length: groupCount }, () => []);
-
-  shuffledTeens.forEach((teen, index) => {
-    groups[index % groupCount].push(teen);
-  });
-
-  displayGroups(groups);
-}
-
 function displayGroups(groups) {
   const groupResults = document.getElementById("group-results");
   groupResults.innerHTML = "";
