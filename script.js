@@ -212,61 +212,55 @@ function formatTime(timestamp) {
 }
 
 async function loadAttendance() {
-    console.log(query);  // This should output the function definition in the console
-    const q = query(collection(db, "teens"));
-    const querySnapshot = await getDocs(q);
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
 
-  const today = new Date();
-  const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
-
-  if (querySnapshot.empty) {
-    list.innerHTML = "<p>No teens have signed in today.</p>";
-    return [];
-  }
-
-  const todaysTeens = [];
-
-  const table = document.createElement("table");
-  const headerRow = table.insertRow();
-  headerRow.innerHTML = `
-    <th>Name</th>
-    <th>Sign-In Time</th>
-    <th>Grade</th>
-    <th>Conf. Level</th>
-    <th>Age</th>
-  `;
-
-  for (const teenDoc of querySnapshot.docs) {
-    const teenData = teenDoc.data();
-    const attendanceRef = doc(db, "teens", teenDoc.id, "attendance", dateStr);
-    const attendanceDoc = await getDoc(attendanceRef);
-
-    if (attendanceDoc.exists()) {
-      const row = table.insertRow();
-      const age = calculateAge(teenData.dob);
-      const grade = teenData.currentGrade;
-      const displayGrade =
-        grade === "Graduated" ? "Graduated" : `Grade: ${grade}`;
-      row.innerHTML = `
-        <td>${teenData.firstName} ${teenData.lastName}</td>
-        <td>${formatTime(attendanceDoc.data().timestamp)}</td>
-        <td>${displayGrade}</td>
-        <td>${teenData.confirmationLevel}</td>
-        <td>${age}</td>
-      `;
-      row.addEventListener("click", () =>
-        toggleParentInfo(row, teenData, teenDoc.id)
-      );
-      todaysTeens.push(teenData);
+    if (todaysTeens.length === 0) {
+        const q = query(collection(db, "teens"), where("attendanceDate", "==", dateStr));
+        const querySnapshot = await getDocs(q);
+        todaysTeens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     }
-  }
 
-  list.appendChild(table);
-  return todaysTeens;
+    displayAttendance(todaysTeens);
 }
 
+function displayAttendance(teens) {
+    const list = document.getElementById("list");
+    list.innerHTML = ""; // Clear previous entries
+
+    if (teens.length === 0) {
+        list.innerHTML = "<p>No teens have signed in today.</p>";
+        return;
+    }
+
+    const table = document.createElement("table");
+    const headerRow = table.insertRow();
+    headerRow.innerHTML = `
+        <th>Name</th>
+        <th>Sign-In Time</th>
+        <th>Grade</th>
+        <th>Conf. Level</th>
+        <th>Age</th>
+    `;
+
+    teens.forEach(teen => {
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${teen.firstName} ${teen.lastName}</td>
+            <td>${formatTime(new Date(teen.timestamp))}</td>
+            <td>${teen.currentGrade}</td>
+            <td>${teen.confirmationLevel}</td>
+            <td>${calculateAge(teen.dob)}</td>
+        `;
+        // Optional: Add a click listener to each row if needed
+    });
+
+    list.appendChild(table);
+}
 async function generateGroups() {
-    if (todaysTeens.length === 0) await loadAttendance(); // Load attendance if not already loaded
+    if (todaysTeens.length === 0) {
+        await loadAttendance(); // Ensure data is loaded
+    }
 
     if (todaysTeens.length === 0) {
         alert("No teens have signed in today.");
@@ -275,7 +269,7 @@ async function generateGroups() {
 
     const groupCount = parseInt(document.getElementById("group-count").value);
     const groups = Array.from({ length: groupCount }, () => []);
-    const shuffledTeens = [...todaysTeens].sort(() => 0.5 - Math.random()); // Copy and shuffle
+    const shuffledTeens = [...todaysTeens].sort(() => 0.5 - Math.random());
 
     shuffledTeens.forEach((teen, index) => {
         groups[index % groupCount].push(teen);
