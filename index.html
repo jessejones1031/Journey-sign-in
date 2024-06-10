@@ -6,39 +6,7 @@
     <title>Youth Ministry Attendance</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <script src="/Journey-sign-in/script.js" type="module">
-    </script>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-      
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyChlC7PB4--sphdh40Mrlr-jgtv10wucA4",
-            authDomain: "journey-sign-in.firebaseapp.com",
-            projectId: "journey-sign-in",
-            storageBucket: "journey-sign-in.appspot.com",
-            messagingSenderId: "504925072757",
-            appId: "1:504925072757:web:be99eba771ae812c96773c",
-            measurementId: "G-RZY3K96VDW"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/Journey-sign-in/service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch(error => {
-                    console.log('Service Worker registration failed:', error);
-                });
-            });
-        }
-    </script>
+    <script src="/Journey-sign-in/script.js" type="module"></script>
 </head>
 <body>
     <div class="container">
