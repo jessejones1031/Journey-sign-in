@@ -342,26 +342,6 @@ async function saveNote(teenId, note) {
   await updateDoc(teenDocRef, { notes: note });
 }
 
-function displayGroups(groups) {
-  const groupResults = document.getElementById("group-results");
-  groupResults.innerHTML = "";
-
-  groups.forEach((group, index) => {
-    const groupDiv = document.createElement("div");
-    groupDiv.innerHTML = `<h3>Group ${index + 1}</h3>`;
-
-    const ul = document.createElement("ul");
-    group.forEach((teen) => {
-      const li = document.createElement("li");
-      li.textContent = `${teen.firstName} ${teen.lastName}`;
-      ul.appendChild(li);
-    });
-
-    groupDiv.appendChild(ul);
-    groupResults.appendChild(groupDiv);
-  });
-}
-
 function formatPhoneNumber(value) {
   // Remove all non-digit characters
   const cleaned = ("" + value).replace(/\D/g, "");
