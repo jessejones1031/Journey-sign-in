@@ -60,6 +60,7 @@ async function searchTeen() {
             signInButton.addEventListener("click", () => markAttendance(doc.id));
             resultItem.appendChild(signInButton);
             searchResults.appendChild(resultItem);
+}
 
 async function markAttendance(id) {
   const today = new Date();
@@ -430,4 +431,3 @@ window.onload = async function () {
     .getElementById("parent-cell-phone")
     .addEventListener("input", handlePhoneInput);
 };
-
