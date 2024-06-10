@@ -60,7 +60,9 @@ async function searchTeen() {
             signInButton.addEventListener("click", () => markAttendance(doc.id));
             resultItem.appendChild(signInButton);
             searchResults.appendChild(resultItem);
-}
+        }); // Closing parenthesis for forEach function
+    } // Closing brace for else block
+} // Closing brace for searchTeen function
 
 async function markAttendance(id) {
   const today = new Date();
