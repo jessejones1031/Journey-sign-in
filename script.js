@@ -420,8 +420,8 @@ function calculateAge(dob) {
   return age;
 }
 
-window.onload = function () {
-  loadAttendance();
+window.onload = async function () {
+    await loadAttendance();
 
   // Add event listeners for phone number inputs
   document
