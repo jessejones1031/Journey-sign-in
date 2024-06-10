@@ -6,7 +6,26 @@
     <title>Youth Ministry Attendance</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+    <script src="https://unpkg.com/vanilla-text-mask@5.1.2/dist/vanillaTextMask.js"></script>
+    <script src="https://unpkg.com/text-mask-addons@3.8.0/dist/textMaskAddons.js"></script>
     <script>
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "your-api-key",
+        authDomain: "your-project-id.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project-id.appspot.com",
+        messagingSenderId: "your-sender-id",
+        appId: "your-app-id",
+        measurementId: "your-measurement-id"
+      };
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const analytics = firebase.analytics();
+
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/service-worker.js')
