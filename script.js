@@ -212,7 +212,7 @@ function formatTime(timestamp) {
 async function loadAttendance() {
     console.log(query);  // This should output the function definition in the console
     const q = query(collection(db, "teens"));
-    const querySnapshot1 = await getDocs(q);
+    const querySnapshot = await getDocs(q);
 
   const today = new Date();
   const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
