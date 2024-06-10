@@ -1,4 +1,4 @@
-// Import Firebase modules 
+// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import { getFirestore, collection, query, where, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
@@ -25,8 +25,6 @@ document.getElementById("add-teen-button").addEventListener("click", showAddTeen
 document.getElementById("cancel-add-teen").addEventListener("click", hideAddTeenForm);
 document.getElementById("attendance-form").addEventListener("submit", addNewTeen);
 document.getElementById("generate-groups-button").addEventListener("click", generateGroups);
-
-let todaysTeens = []; // Store the loaded teens in a global scope to avoid re-fetching
 
 // Display and hide form
 function showAddTeenForm() {
@@ -62,9 +60,7 @@ async function searchTeen() {
             signInButton.addEventListener("click", () => markAttendance(doc.id));
             resultItem.appendChild(signInButton);
             searchResults.appendChild(resultItem);
-        }); // Closing parenthesis for forEach function
-    } // Closing brace for else block
-} // Closing brace for searchTeen function
+}
 
 async function markAttendance(id) {
   const today = new Date();
@@ -212,88 +208,59 @@ function formatTime(timestamp) {
 }
 
 async function loadAttendance() {
-    const today = new Date();
-    const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-    if (todaysTeens.length === 0) {
-        const q = query(collection(db, "teens"), where("attendanceDate", "==", dateStr));
-        const querySnapshot = await getDocs(q);
-        todaysTeens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const today = new Date();
+  const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+
+  const q = query(collection(db, "teens"));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    list.innerHTML = "<p>No teens have signed in today.</p>";
+    return [];
+  }
+
+  const todaysTeens = [];
+
+  const table = document.createElement("table");
+  const headerRow = table.insertRow();
+  headerRow.innerHTML = `
+    <th>Name</th>
+    <th>Sign-In Time</th>
+    <th>Grade</th>
+    <th>Conf. Level</th>
+    <th>Age</th>
+  `;
+
+  for (const teenDoc of querySnapshot.docs) {
+    const teenData = teenDoc.data();
+    const attendanceRef = doc(db, "teens", teenDoc.id, "attendance", dateStr);
+    const attendanceDoc = await getDoc(attendanceRef);
+
+    if (attendanceDoc.exists()) {
+      const row = table.insertRow();
+      const age = calculateAge(teenData.dob);
+      const grade = teenData.currentGrade;
+      const displayGrade =
+        grade === "Graduated" ? "Graduated" : `Grade: ${grade}`;
+      row.innerHTML = `
+        <td>${teenData.firstName} ${teenData.lastName}</td>
+        <td>${formatTime(attendanceDoc.data().timestamp)}</td>
+        <td>${displayGrade}</td>
+        <td>${teenData.confirmationLevel}</td>
+        <td>${age}</td>
+      `;
+      row.addEventListener("click", () =>
+        toggleParentInfo(row, teenData, teenDoc.id)
+      );
+      todaysTeens.push(teenData);
     }
+  }
 
-    displayAttendance(todaysTeens);
-}
-
-function displayAttendance(teens) {
-    const list = document.getElementById("list");
-    list.innerHTML = ""; // Clear previous entries
-
-    if (teens.length === 0) {
-        list.innerHTML = "<p>No teens have signed in today.</p>";
-        return;
-    }
-
-    const table = document.createElement("table");
-    const headerRow = table.insertRow();
-    headerRow.innerHTML = `
-        <th>Name</th>
-        <th>Sign-In Time</th>
-        <th>Grade</th>
-        <th>Conf. Level</th>
-        <th>Age</th>
-    `;
-
-    teens.forEach(teen => {
-        const row = table.insertRow();
-        row.innerHTML = `
-            <td>${teen.firstName} ${teen.lastName}</td>
-            <td>${formatTime(new Date(teen.timestamp))}</td>
-            <td>${teen.currentGrade}</td>
-            <td>${teen.confirmationLevel}</td>
-            <td>${calculateAge(teen.dob)}</td>
-        `;
-        // Optional: Add a click listener to each row if needed
-    });
-
-    list.appendChild(table);
-}
-async function generateGroups() {
-    if (todaysTeens.length === 0) {
-        await loadAttendance(); // Ensure data is loaded
-    }
-
-    if (todaysTeens.length === 0) {
-        alert("No teens have signed in today.");
-        return;
-    }
-
-    const groupCount = parseInt(document.getElementById("group-count").value);
-    const groups = Array.from({ length: groupCount }, () => []);
-    const shuffledTeens = [...todaysTeens].sort(() => 0.5 - Math.random());
-
-    shuffledTeens.forEach((teen, index) => {
-        groups[index % groupCount].push(teen);
-    });
-
-    displayGroups(groups);
-}
-
-function displayGroups(groups) {
-    const groupResults = document.getElementById("group-results");
-    groupResults.innerHTML = "";  // Clear previous groups
-
-    groups.forEach((group, index) => {
-        const groupDiv = document.createElement("div");
-        groupDiv.innerHTML = `<h3>Group ${index + 1}</h3>`;
-        const ul = document.createElement("ul");
-        group.forEach(teen => {
-            const li = document.createElement("li");
-            li.textContent = `${teen.firstName} ${teen.lastName}`;
-            ul.appendChild(li);
-        });
-        groupDiv.appendChild(ul);
-        groupResults.appendChild(groupDiv);
-    });
+  list.appendChild(table);
+  return todaysTeens;
 }
 
 function toggleParentInfo(row, teenData, teenId) {
@@ -362,6 +329,45 @@ async function saveNote(teenId, note) {
   await updateDoc(teenDocRef, { notes: note });
 }
 
+async function generateGroups() {
+  const groupCount = parseInt(document.getElementById("group-count").value);
+  const teens = await loadAttendance();
+
+  if (teens.length === 0) {
+    alert("No teens have signed in today.");
+    return;
+  }
+
+  const shuffledTeens = teens.sort(() => 0.5 - Math.random());
+  const groups = Array.from({ length: groupCount }, () => []);
+
+  shuffledTeens.forEach((teen, index) => {
+    groups[index % groupCount].push(teen);
+  });
+
+  displayGroups(groups);
+}
+
+function displayGroups(groups) {
+  const groupResults = document.getElementById("group-results");
+  groupResults.innerHTML = "";
+
+  groups.forEach((group, index) => {
+    const groupDiv = document.createElement("div");
+    groupDiv.innerHTML = `<h3>Group ${index + 1}</h3>`;
+
+    const ul = document.createElement("ul");
+    group.forEach((teen) => {
+      const li = document.createElement("li");
+      li.textContent = `${teen.firstName} ${teen.lastName}`;
+      ul.appendChild(li);
+    });
+
+    groupDiv.appendChild(ul);
+    groupResults.appendChild(groupDiv);
+  });
+}
+
 function formatPhoneNumber(value) {
   // Remove all non-digit characters
   const cleaned = ("" + value).replace(/\D/g, "");
@@ -413,8 +419,8 @@ function calculateAge(dob) {
   return age;
 }
 
-window.onload = async function () {
-    await loadAttendance();
+window.onload = function () {
+  loadAttendance();
 
   // Add event listeners for phone number inputs
   document
