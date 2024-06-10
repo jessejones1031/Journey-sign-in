@@ -26,6 +26,8 @@ document.getElementById("cancel-add-teen").addEventListener("click", hideAddTeen
 document.getElementById("attendance-form").addEventListener("submit", addNewTeen);
 document.getElementById("generate-groups-button").addEventListener("click", generateGroups);
 
+let todaysTeens = []; // Store the loaded teens in a global scope to avoid re-fetching
+
 // Display and hide form
 function showAddTeenForm() {
     document.getElementById("attendance-form").style.display = "block";
@@ -208,11 +210,6 @@ function formatTime(timestamp) {
     hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + " " + ampm;
   return strTime;
 }
-
-let todaysTeens = []; // Store the loaded teens in a global scope to avoid re-fetching
-
-// Global variable to store today's attendance data
-let todaysTeens = [];
 
 async function loadAttendance() {
     console.log("Loading attendance");
