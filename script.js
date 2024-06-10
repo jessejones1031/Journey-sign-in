@@ -211,8 +211,6 @@ function formatTime(timestamp) {
   return strTime;
 }
 
-let todaysTeens = []; // Store the loaded teens in a global scope to avoid re-fetching
-
 async function loadAttendance() {
     console.log(query);  // This should output the function definition in the console
     const q = query(collection(db, "teens"));
