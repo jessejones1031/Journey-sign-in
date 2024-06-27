@@ -1,2 +1,3 @@
-sort by time arrived or selectable sort method
-add a register number for today's attendance to count or add a total count text
+Make "Today's Attendance" sortable by clicking the column headers
+Next to "Today's attendance" title add "Total Signed in: #" to see total teens currently signed in
+add Current date display at top of page
