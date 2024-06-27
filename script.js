@@ -246,15 +246,7 @@ async function loadAttendance() {
 
     const todaysTeens = [];
 
-    const table = document.createElement("table");
-    const headerRow = table.insertRow();
-    headerRow.innerHTML = `
-        <th data-column="name">Name</th>
-        <th data-column="time">Sign-In Time</th>
-        <th data-column="grade">Grade</th>
-        <th data-column="confirmation">Conf. Level</th>
-        <th data-column="age">Age</th>
-    `;
+    const table = document.getElementById("attendance-table").tBodies[0];
 
     for (const teenDoc of querySnapshot.docs) {
         const teenData = teenDoc.data();
@@ -282,8 +274,6 @@ async function loadAttendance() {
     }
 
     document.getElementById("total-signed-in").textContent = todaysTeens.length;
-    list.appendChild(table);
-    return todaysTeens;
 }
 
 function toggleParentInfo(row, teenData, teenId) {
@@ -297,16 +287,12 @@ function toggleParentInfo(row, teenData, teenId) {
                 <div class="info-container">
                     <div>
                         <strong>Parent Information:</strong><br>
-                        Parent Name: ${teenData.parentFirstName} ${
-            teenData.parentLastName
-        }<br>
+                        Parent Name: ${teenData.parentFirstName} ${teenData.parentLastName}<br>
                         Parent Cell Phone: ${teenData.parentCellPhone}<br>
                     </div>
                     <div class="notes-container">
                         <strong>Notes:</strong><br>
-                        <div id="notes-${teenId}">${
-            teenData.notes || "No notes available."
-        }</div>
+                        <div id="notes-${teenId}">${teenData.notes || "No notes available."}</div>
                         <button id="edit-note-${teenId}">Edit Notes</button>
                     </div>
                 </div>
