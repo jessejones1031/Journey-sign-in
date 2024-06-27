@@ -6,10 +6,12 @@
     <title>Youth Ministry Attendance</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    <script src="script.js" type="module"></script>
 </head>
 <body>
     <div class="container">
         <h1>Youth Ministry Attendance</h1>
+        <div id="current-date"></div>
         <input type="text" id="search-name" placeholder="Search by Last Name">
         <button id="search-button">Search</button>
         <button id="add-teen-button">Add New Teen</button>
@@ -38,8 +40,19 @@
         </form>
 
         <div id="attendance-list">
-            <h2>Today's Attendance</h2>
-            <ul id="list"></ul>
+            <h2>Today's Attendance (Total Signed in: <span id="total-signed-in">0</span>)</h2>
+            <table id="attendance-table">
+                <thead>
+                    <tr>
+                        <th data-column="name">Name</th>
+                        <th data-column="time">Sign-In Time</th>
+                        <th data-column="grade">Grade</th>
+                        <th data-column="confirmation">Conf. Level</th>
+                        <th data-column="age">Age</th>
+                    </tr>
+                </thead>
+                <tbody id="list"></tbody>
+            </table>
         </div>
 
         <div id="small-groups">
@@ -54,9 +67,8 @@
             <button id="generate-groups-button">Generate Small Groups</button>
             <div id="group-results"></div>
         </div>
-        <button onclick="window.location.href='attendance-report.html'">Open Attendance Report</button>
     </div>
 
-    <script src="/Journey-sign-in/script.js" type="module"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
