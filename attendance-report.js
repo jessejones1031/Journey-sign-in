@@ -1,6 +1,6 @@
 // attendance-report.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyChlC7PB4--sphdh40Mrlr-jgtv10wucA4",
@@ -38,7 +38,11 @@ document.getElementById('generate-report').addEventListener('click', async funct
     snapshot.forEach(async (doc) => {
         const teenName = doc.data().firstName + " " + doc.data().lastName;
         const attendanceRef = collection(db, "teens", doc.id, "attendance");
-        const q = query(attendanceRef, where("date", ">=", formattedStartDate), where("date", "<", formattedEndDate));
+        const q = query(
+            attendanceRef,
+            where("timestamp", ">=", Timestamp.fromDate(formattedStartDate)),
+            where("timestamp", "<", Timestamp.fromDate(formattedEndDate))
+        );
         const attendanceSnap = await getDocs(q);
 
         if (!attendanceSnap.empty) {
