@@ -1,0 +1,7 @@
+{
+  "name": "journey-sign-in",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node test/calculateTeenData.test.js"
+  }
+}
