@@ -62,7 +62,7 @@ async function searchTeen() {
             searchResults.appendChild(resultItem);
       }); // Closing parenthesis for forEach function
         } // Closing brace for else block
-    } // Closing brace for s
+    } // Closing brace for `searchTeen` function
 async function markAttendance(id) {
   const today = new Date();
   const dateStr = today.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
