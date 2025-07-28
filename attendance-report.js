@@ -38,7 +38,11 @@ document.getElementById('generate-report').addEventListener('click', async funct
     snapshot.forEach(async (doc) => {
         const teenName = doc.data().firstName + " " + doc.data().lastName;
         const attendanceRef = collection(db, "teens", doc.id, "attendance");
-        const q = query(attendanceRef, where("date", ">=", formattedStartDate), where("date", "<", formattedEndDate));
+        const q = query(
+            attendanceRef,
+            where("timestamp", ">=", formattedStartDate),
+            where("timestamp", "<", formattedEndDate)
+        );
         const attendanceSnap = await getDocs(q);
 
         if (!attendanceSnap.empty) {
